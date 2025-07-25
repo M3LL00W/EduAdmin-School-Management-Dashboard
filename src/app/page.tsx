@@ -661,7 +661,7 @@ function DashboardContent({ darkMode }: { darkMode: boolean }) {
           >
             <CardTitle className={`${darkMode ? "text-white" : "text-purple-800"}`}>Quick Stats</CardTitle>
             <CardDescription className={`${darkMode ? "text-gray-400" : "text-purple-600"}`}>
-              Today's overview
+              Today&apos;s overview
             </CardDescription>
           </CardHeader>
           <CardContent className="p-6">
