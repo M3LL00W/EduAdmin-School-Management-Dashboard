@@ -1,6 +1,5 @@
 "use client"
 import { NotificationButton } from "@/components/NotificationButton";
-
 import { useState, useEffect } from "react"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Button } from "@/components/ui/button"
@@ -71,7 +70,12 @@ import {
   XCircle,
 } from "lucide-react"
 
-type PageType = "dashboard" | "students" | "teachers" | "classes"
+import { ExamsContent } from "@/components/exams-content"
+import { AboutContent } from "@/components/about-content"
+import { Footer } from "@/components/footer"
+import { AnimatedLogo } from "@/components/animated-logo"
+
+type PageType = "dashboard" | "students" | "teachers" | "classes" | "exams" | "about"
 
 interface Student {
   id: string
@@ -137,6 +141,20 @@ const navigationItems = [
     icon: BookOpen,
     color: "text-orange-600",
     bgColor: "bg-orange-50",
+  },
+  {
+    title: "Exams",
+    url: "exams",
+    icon: Calendar,
+    color: "text-red-600",
+    bgColor: "bg-red-50",
+  },
+  {
+    title: "About",
+    url: "about",
+    icon: School,
+    color: "text-indigo-600",
+    bgColor: "bg-indigo-50",
   },
 ]
 
@@ -430,9 +448,7 @@ function AppSidebar({
         className={`transition-colors duration-300 ${darkMode ? "bg-gradient-to-r from-gray-800 to-gray-900" : "bg-gradient-to-r from-indigo-600 to-purple-600"} text-white`}
       >
         <div className="flex items-center gap-3 px-4 py-4">
-          <div className="flex aspect-square size-10 items-center justify-center rounded-xl bg-white/20 backdrop-blur-sm">
-            <School className="size-5 text-white" />
-          </div>
+          <AnimatedLogo />
           <div className="flex flex-col gap-0.5 leading-none">
             <span className="font-bold text-white text-lg">EduAdmin</span>
             <span className="text-xs text-white/80">School Management Pro</span>
@@ -449,12 +465,13 @@ function AppSidebar({
                   <SidebarMenuButton
                     asChild
                     isActive={activePage === item.url}
-                    className={`hover:shadow-md transition-all duration-300 transform hover:scale-105 ${activePage === item.url
-                      ? `${item.bgColor} ${item.color} shadow-lg`
-                      : darkMode
-                        ? "hover:bg-gray-800 text-gray-300"
-                        : "hover:bg-white text-gray-700"
-                      }`}
+                    className={`hover:shadow-md transition-all duration-300 transform hover:scale-105 ${
+                      activePage === item.url
+                        ? `${item.bgColor} ${item.color} shadow-lg`
+                        : darkMode
+                          ? "hover:bg-gray-800 text-gray-300"
+                          : "hover:bg-white text-gray-700"
+                    }`}
                   >
                     <button
                       onClick={() => setActivePage(item.url as PageType)}
@@ -546,12 +563,13 @@ function DashboardContent({ darkMode }: { darkMode: boolean }) {
                 <div className="flex items-center gap-2 mt-1">
                   <span className={`text-2xl font-bold ${stat.textColor}`}>{stat.value}</span>
                   <div
-                    className={`flex items-center gap-1 px-2 py-1 rounded-full text-xs font-medium ${stat.trend === "up"
-                      ? "bg-green-100 text-green-800"
-                      : stat.trend === "down"
-                        ? "bg-red-100 text-red-800"
-                        : "bg-gray-100 text-gray-800"
-                      }`}
+                    className={`flex items-center gap-1 px-2 py-1 rounded-full text-xs font-medium ${
+                      stat.trend === "up"
+                        ? "bg-green-100 text-green-800"
+                        : stat.trend === "down"
+                          ? "bg-red-100 text-red-800"
+                          : "bg-gray-100 text-gray-800"
+                    }`}
                   >
                     {stat.trend === "up" && <TrendingUp className="size-3" />}
                     {stat.trend === "down" && <TrendingDown className="size-3" />}
@@ -643,7 +661,7 @@ function DashboardContent({ darkMode }: { darkMode: boolean }) {
           >
             <CardTitle className={`${darkMode ? "text-white" : "text-purple-800"}`}>Quick Stats</CardTitle>
             <CardDescription className={`${darkMode ? "text-gray-400" : "text-purple-600"}`}>
-              Today&apos;s overview
+              Today's overview
             </CardDescription>
           </CardHeader>
           <CardContent className="p-6">
@@ -774,9 +792,9 @@ function DashboardContent({ darkMode }: { darkMode: boolean }) {
       </Card>
 
       {/* Enhanced Action Button */}
-      <div className="flex justify-center">
-        <NotificationButton />
-      </div>
+<div className="flex justify-center">
+  <NotificationButton />
+</div>
     </div>
   )
 }
@@ -1469,6 +1487,10 @@ export default function Dashboard() {
         return <TeachersContent darkMode={darkMode} />
       case "classes":
         return <ClassesContent darkMode={darkMode} />
+      case "exams":
+        return <ExamsContent darkMode={darkMode} />
+      case "about":
+        return <AboutContent darkMode={darkMode} />
       default:
         return <DashboardContent darkMode={darkMode} />
     }
@@ -1484,6 +1506,10 @@ export default function Dashboard() {
         return "Teachers"
       case "classes":
         return "Classes"
+      case "exams":
+        return "Exam Management"
+      case "about":
+        return "About EduAdmin"
       default:
         return "Dashboard"
     }
@@ -1521,7 +1547,7 @@ export default function Dashboard() {
                 <Avatar className={`h-8 w-8 ring-2 ${darkMode ? "ring-gray-600" : "ring-indigo-100"}`}>
                   <AvatarImage src="/placeholder.svg?height=32&width=32" alt="Admin" />
                   <AvatarFallback className="bg-gradient-to-r from-indigo-500 to-purple-500 text-white">
-                    A
+                    AD
                   </AvatarFallback>
                 </Avatar>
               </div>
@@ -1529,6 +1555,7 @@ export default function Dashboard() {
           </header>
 
           {renderContent()}
+          <Footer darkMode={darkMode} />
         </SidebarInset>
       </SidebarProvider>
     </div>
